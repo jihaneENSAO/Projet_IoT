@@ -6,6 +6,13 @@ from .models import Dht11
 def dashboard(request):
     # Rend juste la page; les données sont chargées via JS
     return render(request, "dashboard.html")
+def graph_temp(request):
+    return render(request, "graph_temp.html")
+
+
+def graph_hum(request):
+    return render(request, "graph_hum.html")
+
 
 def latest_json(request):
     # Fournit la dernière mesure en JSON (sans passer par api.py)

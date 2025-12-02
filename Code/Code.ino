@@ -4,11 +4,11 @@
 #include <ArduinoJson.h>
 
 #define DHTTYPE DHT11
-const char* ssid = "Oussama";
-const char* password = "oussama123";
+const char* ssid = "Chaimae";
+const char* password = "1234512345";
 
-const char* serverName = "http://127.0.0.1:8000/api/post";
-//const char* serverName = "http://monitoringtemperatureandhumi.pythonanywhere.com/api/temperaturehumidity";
+//const char* serverName = "http://127.0.0.1:8000/api/post";
+const char* serverName = "http://jihane04.pythonanywhere.com/api/post";
 #define DHTPIN D2
 DHT dht(DHTPIN, DHTTYPE);
 
