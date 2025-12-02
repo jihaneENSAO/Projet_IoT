@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Dashboard Température & Humidité</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f0f4f8;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .card {
+            width: 280px;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background: #4da3ff;
+            color: white;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .value {
+            font-size: 35px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .time {
+            color: #555;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Dashboard Température & Humidité (DHT11)</h1>
+
+    <div class="container">
+
+        <!-- Carte Température -->
+        <div class="card">
+            <div class="header">Température</div>
+            <div id="tempValue" class="value">-- °C</div>
+            <div id="tempTime" class="time">--</div>
+
+            <button onclick="location.href='/graph_temp/'"
+                style="margin-top:10px;padding:8px 15px;background:#4da3ff;color:white;border:0;border-radius:6px;cursor:pointer;">
+                Voir graphe température
+            </button>
+            
+        </div>
+
+        <!-- Carte Humidité -->
+        <div class="card">
+            <div class="header">Humidité</div>
+            <div id="humValue" class="value">-- %</div>
+            <div id="humTime" class="time">--</div>
+            <button onclick="location.href='/graph_hum/'"
+                style="margin-top:10px;padding:8px 15px;background:#4da3ff;color:white;border:0;border-radius:6px;cursor:pointer;">
+                Voir graphe humidité
+            </button>
+        </div>
+
+    </div>
+
+    <script src="/static/js/dashboard.js"></script>
+</body>
+
+</html>
