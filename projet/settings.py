@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -118,6 +119,17 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS =[BASE_DIR / "static"]
+
+# Pour le déploiement sur PythonAnywhere, souvent on définit un chemin absolu
+import os
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),  # là où tu as ton dossier static pour le dev
+]
+
+# Pour la collecte des fichiers statiques en production
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
