@@ -69,7 +69,7 @@
                 style="margin-top:10px;padding:8px 15px;background:#4da3ff;color:white;border:0;border-radius:6px;cursor:pointer;">
                 Voir graphe température
             </button>
-            
+
         </div>
 
         <!-- Carte Humidité -->
@@ -84,8 +84,8 @@
         </div>
 
     </div>
-
-    <script src="/static/js/dashboard.js"></script>
+    {% load static %}
+    <script src="{% static 'js/dashboard.js' %}"></script>
 </body>
 
 </html>
