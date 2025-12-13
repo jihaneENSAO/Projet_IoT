@@ -2,6 +2,8 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from .models import Dht11
+from django.shortcuts import render
+
 
 def dashboard(request):
     # Rend juste la page; les données sont chargées via JS

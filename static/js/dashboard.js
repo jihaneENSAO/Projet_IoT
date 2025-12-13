@@ -1,24 +1,64 @@
+const API_URL = "/latest/";
+
+// Sélecteurs pour les cartes
+const tempValue = document.getElementById("tempValue");
+const humValue = document.getElementById("humValue");
+const tempTime = document.getElementById("tempTime");
+const humTime = document.getElementById("humTime");
+
+// Sélecteurs pour alertes / opérateurs
+const incidentEl = document.getElementById("incident-status");
+const alertCounterEl = document.getElementById("alert-counter");
+const op1 = document.getElementById("op1");
+const op2 = document.getElementById("op2");
+const op3 = document.getElementById("op3");
+
+let alertCount = 0;
+
 async function loadLatest() {
     try {
-        const res = await fetch("/latest/");
+        const res = await fetch(API_URL);
         const data = await res.json();
 
-        document.getElementById("tempValue").textContent = data.temperature + " °C";
-        document.getElementById("humValue").textContent = data.humidity + " %";
+        const t = data.temp;       // clé conforme à ton endpoint /latest/
+        const h = data.hum;
+        const time = new Date(data.dt_iso).toLocaleString();
 
-        const date = new Date(data.timestamp);
-        const diffSec = Math.round((Date.now() - date) / 1000);
+        // Mise à jour cartes
+        tempValue.textContent = t + " °C";
+        humValue.textContent = h + " %";
+        tempTime.textContent = time;
+        humTime.textContent = time;
 
-        document.getElementById("tempTime").textContent =
-            "il y a : " + diffSec + " secondes (" + date.toLocaleTimeString() + ")";
+        // ---------------------
+        // Logique incidents
+        // ---------------------
+        if (t < 2 || t > 8) {
+            incidentEl.textContent = "⚠️ Incident : température hors plage !";
+            incidentEl.style.color = "red";
+            alertCount++;
+        } else {
+            incidentEl.textContent = "Aucun incident";
+            incidentEl.style.color = "green";
+            alertCount = 0;
+        }
 
-        document.getElementById("humTime").textContent =
-            "il y a : " + diffSec + " secondes (" + date.toLocaleTimeString() + ")";
+        alertCounterEl.textContent = "Compteur alertes : " + alertCount;
 
-    } catch (e) {
-        console.log("Erreur API :", e);
+        // ---------------------
+        // Opérateurs
+        // ---------------------
+        op1.style.display = alertCount > 0 ? "block" : "none";
+        op2.style.display = alertCount > 3 ? "block" : "none";
+        op3.style.display = alertCount > 6 ? "block" : "none";
+
+    } catch (err) {
+        console.error("Erreur API:", err);
+        incidentEl.textContent = "Erreur de connexion au serveur";
+        incidentEl.style.color = "darkred";
     }
 }
 
-loadLatest();         // chargement initial
-setInterval(loadLatest, 5000); // mise à jour toutes les 5 secondes
+// Lancement initial + mise à jour toutes les 8 secondes
+loadLatest();
+setInterval(loadLatest, 8000);

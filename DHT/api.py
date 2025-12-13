@@ -5,6 +5,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 from django.core.mail import send_mail
 from django.conf import settings
+from django.http import JsonResponse
 from .utils import send_telegram
 
 @api_view(['GET'])
@@ -13,6 +14,8 @@ def Dlist(request):
     data = DHT11serialize(all_data, many=True).data
     return Response({'data': data})
 
+
+# -------- API CREATE --------
 class Dhtviews(generics.CreateAPIView):
     queryset = Dht11.objects.all()
     serializer_class = DHT11serialize
@@ -22,7 +25,7 @@ class Dhtviews(generics.CreateAPIView):
         temp = instance.temp
 
         if temp > 25:
-            # 1) Email (si tu veux le garder)
+            # --- Email (facultatif)
             try:
                 send_mail(
                     subject="⚠️ Alerte Température élevée",
@@ -34,6 +37,16 @@ class Dhtviews(generics.CreateAPIView):
             except Exception:
                 pass
 
-            # 2) Telegram
+            # --- Telegram alert
             msg = f"⚠️ Alerte DHT11: {temp:.1f} °C (>25) à {instance.dt}"
             send_telegram(msg)
+
+
+# -------- API LAST VALUE --------
+def latest_json(request):
+    obj = Dht11.objects.last()
+    return JsonResponse({
+        "temperature": obj.temp,
+        "humidity": obj.hum,
+        "timestamp": obj.dt.isoformat()
+    })

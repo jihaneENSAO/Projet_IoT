@@ -4,45 +4,125 @@
 <head>
     <meta charset="UTF-8" />
     <title>Historique Température</title>
+    <link rel="icon" type="image/png" href="temperature.png">
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
+        /* --- BODY --- */
         body {
-            font-family: Arial;
-            padding: 20px;
-            background: #f0f4f8;
+            font-family: 'Arial', sans-serif;
+            background-color: #fff4e6;
+            /* Fond doux et chaleureux */
+            margin: 0;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        a {
-            color: #4da3ff;
-            font-size: 18px;
+        /* --- BOUTON RETOUR --- */
+        .back-button {
+            display: inline-block;
+            padding: 12px 25px;
+            margin-bottom: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            background-color: #ff6b35;
+            /* Couleur thème température */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
         }
 
+        .back-button:hover {
+            background-color: #ff3d00;
+            transform: scale(1.05);
+        }
+
+        /* --- TITRE --- */
         h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #bf360c;
+            /* Rouge chaud */
             text-align: center;
         }
 
+        /* --- CONTAINER GRAPHE --- */
         #chartContainer {
-            width: 90%;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 900px;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* --- CANVAS --- */
+        canvas {
+            width: 100% !important;
+            height: 450px !important;
         }
     </style>
 </head>
 
 <body>
 
-    <a href="/">← Retour au dashboard</a>
+    <a href="/" class="back-button">← Retour au dashboard</a>
     <h1>Historique Température</h1>
 
     <div id="chartContainer">
         <canvas id="tempChart"></canvas>
     </div>
 
-    <script src="/static/js/graph_temp.js"></script>
+    <script>
+        async function loadTempHistory() {
+            const res = await fetch("/api/");
+            const json = await res.json();
+
+            if (!json.data || json.data.length === 0) {
+                console.log("Pas de données !");
+                return;
+            }
+
+            const labels = json.data.map(row =>
+                new Date(row.dt_iso).toLocaleTimeString("fr-FR")
+            );
+
+            const temps = json.data.map(row => row.temp);
+
+            new Chart(document.getElementById("tempChart"), {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: "Température (°C)",
+                        data: temps,
+                        borderColor: "#ff6b35",
+                        backgroundColor: "rgba(255,107,53,0.2)",
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+                        pointRadius: 4,
+                        pointBackgroundColor: "#ff3d00"
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+        }
+
+        loadTempHistory();
+    </script>
+
+
+
 </body>
 
 </html>
