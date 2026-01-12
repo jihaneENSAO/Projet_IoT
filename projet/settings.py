@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'DHT',
     'rest_framework',
+    'incident',
 ]
 
 MIDDLEWARE = [
@@ -121,7 +122,7 @@ USE_TZ = True
 import os
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'static')]
-
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles") 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -130,8 +131,17 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "jihane.bouras.ensao@ump.ac.ma" # ⚠️ ton adresse 
-EMAIL_HOST_PASSWORD = "azlo xvof zody uezj" 
-# # pas ton vrai mot de passe !
-TELEGRAM_BOT_TOKEN = "8305467127:AAG_PHCvVAdFhH75NHYsn6Na62KqsjwezN0" # ← token 
-TELEGRAM_CHAT_ID = "7130304317" # ← id utilisateur/groupe
+EMAIL_HOST_USER = "chaimae.elazimani.ensao@ump.ac.ma" 
+# ⚠️ ton adresse 
+EMAIL_HOST_PASSWORD = "knue fscn egnt olzp" # pas ton vrai mot de passe 
+TELEGRAM_BOT_TOKEN = "7117787679:AAGKA1FIh_kSaXgo3cEQRSTj1fOX67i9t9Y" # ← token 
+TELEGRAM_CHAT_ID = "7326039297" # ← id utilisateur/groupe
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'dashboard'
+LOGOUT_REDIRECT_URL = 'login'
+
+# ====== MQTT ======
+MQTT_HOST = 'localhost'
+MQTT_PORT = 1883
+MQTT_TOPIC_DHT = 'capteur/dht11'

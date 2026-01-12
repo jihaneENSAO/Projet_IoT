@@ -1,5 +1,6 @@
+/*app.js */
 // URL vers l’API Django
-const API_URL = "/latest/";
+/*const API_URL = "latest/";
 
 // Sélecteurs pour les cartes (température & humidité)
 const tempValue = document.getElementById("tempValue");
@@ -74,3 +75,4 @@ loadLatest();
 
 // Mise à jour toutes les 8 secondes
 setInterval(loadLatest, 8000);
+*/

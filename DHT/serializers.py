@@ -1,15 +1,13 @@
-# serializers.py
 from rest_framework import serializers
-from .models import Dht11
+from .models import Dht11, Incident
 
-class DHT11serialize(serializers.ModelSerializer):
-    # Champ calculé pour l'ISO format
-    dt_iso = serializers.SerializerMethodField()
-
+class Dht11Serializer(serializers.ModelSerializer):
+    dt = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
     class Meta:
         model = Dht11
-        # Attention ici : tu dois utiliser les noms exacts des champs de ton modèle
-        fields = ['temp', 'hum', 'dt_iso']
+        fields = '__all__'
 
-    def get_dt_iso(self, obj):
-        return obj.dt.isoformat()  # 'dt' est ton champ DateTimeField dans le modèle
+class IncidentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Incident
+        fields = '__all__'

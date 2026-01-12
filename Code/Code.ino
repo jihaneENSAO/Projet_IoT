@@ -9,8 +9,8 @@
 const char* ssid = "Adsl_inwi_07A9";
 const char* password = "D842F70307A9";
 
-const char* serverName = "http://192.168.1.2:8000//api/post"; // Avant
-//const char* serverName = "http://jihane04.pythonanywhere.com/api/post";
+const char* serverName = "http://192.168.1.3:8000/api/post/"; // Avant
+//const char* serverName = "http://jihane04.pythonanywhere.com";
 
 DHT dht(DHTPIN, DHTTYPE);
 

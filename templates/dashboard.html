@@ -2,146 +2,299 @@
 <html lang="fr">
 
 <head>
-    <meta charset="UTF-8" />
-    <title>Dashboard Température & Humidité</title>
-
+    <meta charset="UTF-8">
+    <title>Supervision Labo</title>
     {% load static %}
-
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
         body {
-            font-family: Arial;
-            background: #f0f4f8;
-            padding: 20px;
+            font-family: 'Inter', sans-serif;
+            background: #eef2f7;
+            margin: 0;
+            padding: 0;
+            color: #1f2937;
+        }
+
+        /* ===== Topbar ===== */
+        .topbar {
+            background: #2c3e50;
+            color: white;
+            padding: 12px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .user-pill {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-logout {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 7px 18px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .btn-logout:hover {
+            background: #c0392b;
+        }
+
+        /* ===== Container ===== */
+        .container {
+            padding: 25px;
+            max-width: 1200px;
+            margin: auto;
         }
 
         h1 {
             text-align: center;
-            margin-bottom: 10px;
+            font-size: 32px;
+            font-weight: 700;
+            color: #111827;
+            border-left: 6px solid #3b82f6;
+            padding-left: 15px;
+            padding-top: 6px;
+            padding-bottom: 6px;
+            border-radius: 4px;
+            background-color: #f0f4ff;
+            margin-bottom: 30px;
         }
 
-        .container {
-            display: flex;
+        /* ===== Grid cards ===== */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
             justify-content: center;
-            gap: 40px;
-            margin-top: 30px;
         }
 
         .card {
-            width: 280px;
             background: white;
-            border-radius: 10px;
-            padding: 20px;
+            padding: 25px 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
             text-align: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        .header {
-            background: #4da3ff;
-            color: white;
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 15px;
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: #2c3e50;
         }
 
         .value {
-            font-size: 35px;
+            font-size: 2.5em;
             font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .timestamp {
+            color: #7f8c8d;
+            font-size: 0.9em;
             margin-bottom: 10px;
         }
 
-        .time {
-            color: #555;
-            font-size: 14px;
+        .btn-blue,
+        .btn-green {
+            cursor: pointer;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            transition: all 0.2s;
         }
 
-        /* Section Alerte/Incident */
-        .alerts {
-            margin-top: 40px;
+        .btn-blue {
+            background-color: #3b82f6;
+            color: white;
+            padding: 10px 22px;
+        }
+
+        .btn-blue:hover {
+            background-color: #1e40af;
+            transform: translateY(-2px);
+        }
+
+        .btn-green {
+            background-color: #27ae60;
+            color: white;
+            padding: 12px 28px;
+        }
+
+        .btn-green:hover {
+            background-color: #1e8449;
+            transform: translateY(-2px);
+        }
+
+        /* ===== Status badge ===== */
+        .status-box {
+            margin: 30px auto;
+            padding: 22px 20px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 800px;
+            font-weight: 600;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .ok {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .alert {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* ===== Opérateurs cards ===== */
+        .op-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 30px;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .op-card {
             background: white;
             padding: 20px;
-            border-radius: 10px;
-            width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .alerts p {
-            font-size: 18px;
-            text-align: center;
-        }
-
-        /* Opérateurs */
-        .operators {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .op {
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            width: 300px;
             display: none;
-            background: #4da3ff;
-            padding: 10px 20px;
-            border-radius: 8px;
-            color: white;
-            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .op-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .op-card h4 {
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+
+        .op-card p {
+            font-size: 0.85em;
+        }
+
+        textarea {
+            width: 100%;
+            height: 60px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            padding: 8px;
+            resize: vertical;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .op-container {
+                flex-direction: column;
+                align-items: center;
+            }
         }
     </style>
-
 </head>
 
 <body>
-
-    <h1>Dashboard Température & Humidité (DHT11)</h1>
+    <div class="topbar">
+        <div style="font-weight: bold; font-size: 1.2em;">🔬 Supervision Labo IoT</div>
+        <div class="user-pill">
+            <span>Connecté : <b>{{ request.user.username }}</b></span>
+            <form action="{% url 'logout' %}" method="post" style="margin:0;">
+                {% csrf_token %}
+                <button type="submit" class="btn-logout">Déconnexion</button>
+            </form>
+        </div>
+    </div>
 
     <div class="container">
+        <h1>📊 Système de Surveillance DHT11</h1>
 
-        <!-- Carte Température -->
-        <div class="card">
-            <div class="header">Température</div>
-            <div id="tempValue" class="value">-- °C</div>
-            <div id="tempTime" class="time">--</div>
-
-            <!-- Bouton Température -->
-            <button onclick='location.href="{% url "graph-temp" %}"'
-                style="margin-top:10px;padding:8px 15px;background:#4da3ff;color:white;border:0;border-radius:6px;cursor:pointer;">
-                Voir graphe température
-            </button>
+        <div class="grid">
+            <div class="card">
+                <h3>Température</h3>
+                <div id="temp" class="value">-- °C</div>
+                <p id="temp-time" class="timestamp">--</p>
+                <button class="btn-blue" onclick="location.href='{% url 'graph-temp' %}'">Graphique</button>
+            </div>
+            <div class="card">
+                <h3>Humidité</h3>
+                <div id="hum" class="value">-- %</div>
+                <p id="hum-time" class="timestamp">--</p>
+                <button class="btn-blue" onclick="location.href='{% url 'graph-hum' %}'">Graphique</button>
+            </div>
         </div>
 
-        <!-- Carte Humidité -->
-        <div class="card">
-            <div class="header">Humidité</div>
-            <div id="humValue" class="value">-- %</div>
-            <div id="humTime" class="time">--</div>
-
-            <!-- Bouton Humidité -->
-            <button onclick='location.href="{% url "graph-hum" %}"'
-                style="margin-top:10px;padding:8px 15px;background:#4da3ff;color:white;border:0;border-radius:6px;cursor:pointer;">
-                Voir graphe humidité
-            </button>
+        <div id="incident-badge" class="status-box ok">
+            <h2 id="incident-status" style="margin:0;">Système Opérationnel</h2>
+            <p>Alertes consécutives : <span id="incident-counter">0</span></p>
+            <a href="{% url 'incident_archive' %}" style="color: inherit; font-weight: bold;">Accéder aux archives</a>
         </div>
 
+        <div class="op-container">
+            <div id="op1" class="op-card">
+                <h4>Niveau 1 : Alerte Immédiate</h4>
+                <p>Dernier com validé : <span id="op1_show">-</span></p>
+                <textarea id="op1_comment" placeholder="Note d'intervention..."></textarea>
+                <label><input type="checkbox" id="op1_ack"> Accuser réception</label>
+                <button id="op1_save" class="btn-blue">Enregistrer OP1</button>
+                <p id="op1_ack_status"></p>
+            </div>
+
+            <div id="op2" class="op-card">
+                <h4>Niveau 2 : Alerte > 3 mesures</h4>
+                <p>Dernier com validé : <span id="op2_show">-</span></p>
+                <textarea id="op2_comment"></textarea>
+                <label><input type="checkbox" id="op2_ack"> Accuser réception</label>
+                <button id="op2_save" class="btn-blue">Enregistrer OP2</button>
+                <p id="op2_ack_status"></p>
+            </div>
+
+            <div id="op3" class="op-card">
+                <h4>Niveau 3 : Alerte Critique (> 6)</h4>
+                <p>Dernier com validé : <span id="op3_show">-</span></p>
+                <textarea id="op3_comment"></textarea>
+                <label><input type="checkbox" id="op3_ack"> Accuser réception</label>
+                <button id="op3_save" class="btn-blue">Enregistrer OP3</button>
+                <p id="op3_ack_status"></p>
+            </div>
+        </div>
+
+        <div style="text-align:center; margin:40px 0;">
+            <button onclick="location.href='{% url 'download_dht_csv' %}'" class="btn-green">📥 Exporter Données Capteur (CSV)</button>
+        </div>
     </div>
 
-    <!-- SECTION ALERTES / INCIDENTS -->
-    <div class="alerts">
-        <p id="incident-status">Aucun incident détecté</p>
-        <p id="alert-counter">Nombre d'alertes : 0</p>
-    </div>
-
-    <!-- SECTION OPERATEURS -->
-    <div class="operators">
-        <div id="op1" class="op">Opérateur 1</div>
-        <div id="op2" class="op">Opérateur 2</div>
-        <div id="op3" class="op">Opérateur 3</div>
-    </div>
-
-    <!-- Scripts -->
     <script src="{% static 'js/dashboard.js' %}"></script>
-    <script src="{% static 'js/app.js' %}"></script>
-
 </body>
-
 </html>

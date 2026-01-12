@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Détails Incident</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #eef2f7;
+      margin: 0;
+      padding: 40px;
+      color: #1f2937;
+    }
+
+    /* ===== Bouton retour ===== */
+    .btn {
+      display: inline-block;
+      background-color: #3b82f6; /* bleu graphique */
+      color: #fff;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.2s;
+      margin-bottom: 25px;
+    }
+    .btn:hover {
+      background-color: #1e40af;
+      transform: translateY(-2px);
+    }
+
+    /* ===== Titre ===== */
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 25px;
+      color: #111827;
+      border-left: 6px solid #3b82f6;
+      padding-left: 15px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      border-radius: 4px;
+      background-color: #f0f4ff;
+    }
+
+    /* ===== Card ===== */
+    .card {
+      background: #fff;
+      padding: 30px 35px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      max-width: 700px;
+      margin-top: 20px;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 14px 0;
+      font-size: 17px;
+    }
+    .row b {
+      flex-shrink: 0;
+      width: 180px;
+      color: #4b5563;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #e5e7eb;
+      margin: 25px 0;
+    }
+
+    /* ===== Statut ===== */
+    .status {
+      padding: 6px 14px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 14px;
+      color: #fff;
+      text-align: center;
+      min-width: 100px;
+      transition: background 0.3s;
+    }
+    .status-open { background-color: #f87171; }   /* rouge clair */
+    .status-closed { background-color: #34d399; } /* vert clair */
+
+    /* ===== Badge température ===== */
+    .badge-temp {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      background-color: #3b82f6;
+    }
+    .badge-temp.alert {
+      background-color: #f87171;
+    }
+
+    /* ===== Blocs opérateurs ===== */
+    .operator {
+      background: #f9fafb;
+      padding: 15px 20px;
+      border-radius: 16px;
+      margin-bottom: 12px;
+      border-left: 5px solid #3b82f6;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .operator:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 480px) {
+      .row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .row b {
+        width: 100%;
+        margin-bottom: 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="{% url 'incident_archive' %}" class="btn">← Retour aux archives</a>
+  <h1>📊 Détails Incident #{{ incident.id }}</h1>
+
+  <div class="card">
+    <div class="row">
+      <b>Statut :</b>
+      <span class="status {% if incident.is_open %}status-open{% else %}status-closed{% endif %}">
+        {% if incident.is_open %}OUVERT{% else %}FERMÉ{% endif %}
+      </span>
+    </div>
+
+    <div class="row"><b>Début :</b> {{ incident.created_at|date:"d/m/Y H:i:s" }}</div>
+    <div class="row"><b>Fin :</b> {{ incident.ended_at|date:"d/m/Y H:i:s" }}</div>
+
+    <div class="row">
+      <b>Temp max :</b>
+      <span class="badge-temp {% if incident.max_temp > incident.temp_max_autorisee %}alert{% endif %}">
+        {{ incident.max_temp }} °C
+      </span>
+    </div>
+
+    <div class="row"><b>Compteur :</b> {{ incident.counter }}</div>
+
+    <hr>
+
+    <div class="operator">
+      <div class="row"><b>Opérateur 1 ACK :</b> {{ incident.op1_ack }}</div>
+      <div class="row"><b>Opérateur 1 Commentaire :</b> {{ incident.op1_comment|default:"-" }}</div>
+    </div>
+
+    <div class="operator">
+      <div class="row"><b>Opérateur 2 ACK :</b> {{ incident.op2_ack }}</div>
+      <div class="row"><b>Opérateur 2 Commentaire :</b> {{ incident.op2_comment|default:"-" }}</div>
+    </div>
+
+    <div class="operator">
+      <div class="row"><b>Opérateur 3 ACK :</b> {{ incident.op3_ack }}</div>
+      <div class="row"><b>Opérateur 3 Commentaire :</b> {{ incident.op3_comment|default:"-" }}</div>
+    </div>
+  </div>
+</body>
+</html>

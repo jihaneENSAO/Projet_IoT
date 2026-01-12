@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Archives des incidents</title>
+  <style>
+    /* ===== Base ===== */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #eef2f7;
+      margin: 0;
+      padding: 40px;
+      color: #1f2937;
+    }
+
+    /* ===== Bouton retour ===== */
+    .btn {
+      display: inline-block;
+      background-color: #3b82f6; /* bleu graphique */
+      color: #fff;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.2s;
+      margin-bottom: 25px;
+    }
+
+    .btn:hover {
+      background-color: #1e40af;
+      transform: translateY(-2px);
+    }
+
+    /* ===== Titre ===== */
+    h1 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 25px;
+      color: #111827;
+      border-left: 6px solid #3b82f6;
+      padding-left: 15px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      border-radius: 4px;
+      background-color: #f0f4ff;
+    }
+
+    /* ===== Card/Table Container ===== */
+    .box {
+      background: #fff;
+      padding: 25px 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      font-size: 16px;
+    }
+
+    th,
+    td {
+      padding: 12px 15px;
+      text-align: left;
+    }
+
+    th {
+      background: #f2f5ff;
+      font-weight: 600;
+      color: #1f2937;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid #e5e7eb;
+      transition: background 0.2s;
+    }
+
+    tbody tr:hover {
+      background: #f9fafb;
+    }
+
+    /* ===== Badge ===== */
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .badge-alert {
+      background-color: #f87171; /* rouge clair */
+    }
+
+    .badge-normal {
+      background-color: #34d399; /* vert clair */
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 600px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      thead tr {
+        display: none;
+      }
+
+      tbody tr {
+        margin-bottom: 20px;
+        border-bottom: 2px solid #e5e7eb;
+      }
+
+      td {
+        padding-left: 50%;
+        position: relative;
+      }
+
+      td::before {
+        position: absolute;
+        left: 15px;
+        width: 45%;
+        white-space: nowrap;
+        font-weight: 600;
+      }
+
+      td:nth-of-type(1)::before { content: "ID"; }
+      td:nth-of-type(2)::before { content: "Début"; }
+      td:nth-of-type(3)::before { content: "Fin"; }
+      td:nth-of-type(4)::before { content: "Temp max"; }
+      td:nth-of-type(5)::before { content: "Compteur"; }
+      td:nth-of-type(6)::before { content: "Détails"; }
+    }
+  </style>
+</head>
+
+<body>
+  <a href="/" class="btn">← Retour au dashboard</a>
+  <h1>📊 Archives des incidents (fermés)</h1>
+
+  <div class="box">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Début</th>
+          <th>Fin</th>
+          <th>Max Temp</th>
+          <th>Compteur</th>
+          <th>Détails</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for inc in incidents %}
+        <tr>
+          <td>#{{ inc.id }}</td>
+          <td>{{ inc.date_traitement|date:"d/m/Y H:i:s" }}</td>
+          <td>{{ inc.ended_at|date:"d/m/Y H:i:s" }}</td>
+          <td>
+            <span class="badge {% if inc.max_temp > inc.temp_max_autorisee %}badge-alert{% else %}badge-normal{% endif %}">
+              {{ inc.max_temp }} °C
+            </span>
+          </td>
+          <td>{{ inc.counter }}</td>
+          <td><a href="{% url 'incident_detail' inc.id %}">Voir</a></td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="6">Aucun incident archivé.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
+
+</html>
