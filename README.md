@@ -48,19 +48,19 @@ La **surveillance manuelle** présente des limites critiques : elle n'est pas co
 ![Login](assets/login.png)
 
 ### Dashboard principal — Surveillance en temps réel
-![Dashboard](assets/dashboard.png)
+![Dashboard](assets/dashboard.jpeg)
 
 ### Historique de la Température
 ![Historique Température](assets/historique_temperature.png)
 
 ### Historique de l'Humidité
-![Historique Humidité](assets/historique_humidite.png)
+![Historique Humidité](assets/historique_humidite.jpeg)
 
 ### Gestion des incidents — Interface opérateurs
 ![Incidents Opérateurs](assets/incidents_operateurs.png)
 
 ### Interface d'alerte active
-![Alerte Active](assets/alerte_active.png)
+![Alerte Active](assets/alerte_active.jpeg)
 
 ### Administration Django — Mesures DHT11
 ![Admin Mesures](assets/admin_mesures.png)
@@ -103,11 +103,11 @@ La **surveillance manuelle** présente des limites critiques : elle n'est pas co
 │                        COUCHE BACKEND                           │
 │                                                                 │
 │   [Django Backend — PythonAnywhere]                             │
-│   ┌──────────────┐  ┌─────────────────┐  ┌──────────────────┐  │
-│   │  Table DHT11 │  │ Table Incidents │  │ Operateur Profiles│ │
-│   │ Temp/Hum/Date│  │Statut/Niveaux   │  │ Roles & Accès    │  │
-│   └──────────────┘  └─────────────────┘  └──────────────────┘  │
-│                    SQLite Database                               │
+│   ┌──────────────┐  ┌──────────────────┐  ┌─────────────────┐  │
+│   │  Table DHT11 │  │ Table Incidents  │  │Operateur Profiles│  │
+│   │ Temp/Hum/Date│  │Statut/Niveaux    │  │ Roles & Accès   │  │
+│   └──────────────┘  └──────────────────┘  └─────────────────┘  │
+│                      SQLite Database                             │
 └──────────────────────────────┬──────────────────────────────────┘
                                │  API REST GET
                                ▼
@@ -256,7 +256,7 @@ http://127.0.0.1:8000
 - 📲 Alertes par **SMS**
 - 📱 **Application mobile**
 - 🔋 **Batterie de secours** pour continuité en cas de coupure
-- 🌡️ **Multi-capteurs** pour surveillance de plusieurs réfrigérateurs simultanément
+- 🌡️ **Multi-capteurs** pour surveillance de plusieurs réfrigérateurs
 
 ---
 
